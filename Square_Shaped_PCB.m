@@ -1,7 +1,3 @@
-
-
-
-
 classdef Square_Shaped_PCB
 
     properties
@@ -21,6 +17,7 @@ classdef Square_Shaped_PCB
         f;
         lg; %gap lenght between conductors 
          % aggiungi quelle di solwirecoil
+         Q; %quality factor
 
     end
 
@@ -115,9 +112,21 @@ classdef Square_Shaped_PCB
 
         fself = 1/(2*pi*sqrt(coilobj.L*coilobj.CP)); 
 
+        coilobj.Q = omega*coilobj.L./coilobj.ESR; 
+
         end 
     end 
 end 
+
+       
+
+
+
+
+        
+
+
+
 
        
 
