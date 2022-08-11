@@ -1,3 +1,7 @@
+
+
+
+
 classdef Square_Shaped_PCB
 
     properties
@@ -20,13 +24,19 @@ classdef Square_Shaped_PCB
 
     end
 
+
+           
     methods 
-        function coilobj = Square_Shaped_PCB(Ts,n,S,W,f,CP,sourceres,rho)
+        function coilobj = Square_Shaped_PCB(Ts,T,n,S,W,f,din,dout,rho)
+            
 
         coilobj.n = n; %n in input = alla n definita sopra 
         coilobj.S = S;
         coilobj.W = W;
         coilobj.Ts = Ts;
+        coilobj.T = T;
+        coilobj.din = din;
+        coilobj.dout=dout;
         coilobj.l = 4.*n.*dout - 4.*n.*W - ((2*n + 1)^2)*(S + W);
 
         mu0 = (4*pi)*1e-7;
@@ -48,7 +58,7 @@ classdef Square_Shaped_PCB
 
         %calcolo della ESR
 
-        Rdc = rho*l/(W.*T);
+        Rdc = rho*coilobj.l./(W.*coilobj.T);
         omega = 2*pi*f;
 
         delta = sqrt(2*rho/(mu0*omega)); 
@@ -101,9 +111,9 @@ classdef Square_Shaped_PCB
         
         epsiloneff = 1 + (epsilonrs - 1)*1/2*Kk11*Kk0/(Kk1*Kk01);
 
-        coilobj.CP = epsilon0*epsiloneff*Kko1*l/Kk0;
+        coilobj.CP = epsilon0*epsiloneff*Kk01*coilobj.l/Kk0;
 
-        fself = 1/(2*pi*sqrt(L*CP)); 
+        fself = 1/(2*pi*sqrt(coilobj.L*coilobj.CP)); 
 
         end 
     end 

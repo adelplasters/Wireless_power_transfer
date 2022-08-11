@@ -1,5 +1,5 @@
 %questa formulazione è valida solo se W << diameter
-function [M, k] = mutua_induttanza(coil1, coil2, dist)
+function [M, k] = mutua_induttanzaideal(coil1, coil2, dist)
 
     mu0 = (4*pi)*1e-7;
 
@@ -17,8 +17,8 @@ function [M, k] = mutua_induttanza(coil1, coil2, dist)
         b(y) = coil2.dout/2 - (y - 1)*(coil2.W+coil2.S) - coil2.W/2; 
     end 
 
-    x = 0;
-    y = 0;
+    x = 1;
+    y = 1;
 
     gamma = zeros(coil1.n, coil2.n); 
     m = zeros(coil1.n, coil2.n);
