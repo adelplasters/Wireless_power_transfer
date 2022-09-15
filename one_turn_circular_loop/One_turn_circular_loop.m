@@ -9,61 +9,65 @@ classdef One_turn_circular_loop
         dout; %diameter of the loop
         w; %diameter of wire
         L; 
-        CP; 
-        ESR; 
+        Cp; %parasitic capacitance  
+        Rwwc; %resistance 
         l; %length of wire
         rho; %resistività del materiale
         f; %operating frequency
         lg; %gap lenght between conductors 
          % aggiungi quelle di solwirecoil
-         Q; %quality factor
+         Q;
          n; %numero di avvolgimenti
+         s; %spacing between turns; 
+         Rdc;
 
     end
 
 
      methods 
-         function [coilobj] = One_turn_circular_loop(dout,w,n)
+         function [coilobj] = One_turn_circular_loop(dout,w,n,s)
 
              coilobj.dout = dout; 
              coilobj.w = w; 
              coilobj.n = n;
+             coilobj.s = s; 
+             f = 13.56e6; 
+             
 
              mu0 = (4*pi)*1e-7; %permeabilità dello spazio
-             mur = 0; %permeabilità del conduttore
-             mu = 0; %permeability with no air gap
+             mur = 1; %permeabilità del conduttore, circa 1 per il rame in una PCB
+             mu = mu0; %permeability with no air gap, non ho trovato un valore 
              eps0 = 8.9*1e-12; 
-             epsr = 0; 
+             epsr = 0.999; 
 
              coilobj.L = 0.5*mu0*mur*dout*log(dout/w); 
 
 
              %calcolo della Rdc 
                 
-             rhoc = 0; %resistivity of conductive material
+             rhoc = 1.72*1e-8; %resistivity of conductive material
              n = 1; %total number of turns
              delta = sqrt(rhoc/(pi*mu*f));
 
-             Rdc = rhoc*n.*(2*pi*w^2)/(pi*((dout)^2));
+             coilobj.Rdc = rhoc*n.*(2*pi*w^2)/(pi*((dout)^2));
 
              %nel caso di incremento della operating frequency la formula
              %da usare diventa:
 
              
-             Rwwc = Rdc*rhoc/(delta*pi*(dout - delta));
+             coilobj.Rwwc = coilobj.Rdc*rhoc/(delta*pi*(dout - delta));
 
 
              %parasitic capacitance 
-             i = 0; %thickness of the insulation layer 
+             i = 38e-6; %thickness of the insulation layer 
              tetae = pi/2; %effective angle between turn i and turn j
-             s = 0; %spacing between turns; 
-     
+             
 
-             factor1 = pi*dout*(w/2)/(i + (w/2)*epsr*(1 - cos(teta)) + 0.5*epsr*s); 
-             factor1 = int(factor1,teta,0,tetae/2);
+             fun = @(teta) pi*dout*(w/2)./(i + (w/2).*epsr*(1 - cos(teta)) + 0.5*epsr*s); 
+             factor1 = integral(fun,0,tetae/2);
              Cturn = eps0*epsr*factor1; 
 
-             Cp = 2*n*Cturn; 
+             coilobj.Cp = 2*n*Cturn; 
 
            
              

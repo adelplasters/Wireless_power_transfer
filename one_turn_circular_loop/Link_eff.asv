@@ -1,7 +1,7 @@
 %funzione per calcolare la link efficiency e il Pmn delivered to Rx 
 
 
-function [link_eff_3coil, P13] = Link_eff(coil1, coil2, coil3, k12, k23, k13, Q1, Q2, Q3, Q3L, QL)
+function [link_eff_3coil, P13] = Link_eff(coil1, coil2, coil3, k12, k23, k13, Q1, Q2, Q3, Q3L)
 
     Vs = 5; 
 
