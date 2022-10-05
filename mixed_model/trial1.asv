@@ -9,7 +9,7 @@ Tx = Solenoid(40e-2,4,6.4,0.3e-3);
 
 [M,k] = mutual_inductance(Rx,Tx,'lateral');
 
-[link_eff] = link_efficiency(k,Tx,Rx,'lateral');
+[link_eff] = link_efficiency(k,Tx,Rx,'lat');
 
 figure 
 plot(k,link_eff)
