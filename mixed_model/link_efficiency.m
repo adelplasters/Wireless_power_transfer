@@ -9,6 +9,7 @@ function [link_eff] = link_efficiency(k,Tx,Rx,caso)
 
             for i=1:100
                 link_eff(i) = (k(i)^2)*Tx.Q*Rx.Q/((1 + sqrt(1 + (k(i)^2)*Tx.Q*Rx.Q)))^2;
+                
             end 
 
             case 'lateral'
